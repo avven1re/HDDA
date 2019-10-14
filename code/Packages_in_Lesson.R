@@ -12,3 +12,10 @@ library(fields)
 
 install.packages("corrplot")      #at 52/208 CorrPlot
 library(corrplot)
+
+#Charts
+install.packages("plotrix")       #at 98/208 Plotrix
+library(plotrix)
+
+install.packages("survival")      #at 98/208 Survival
+library(survival)
