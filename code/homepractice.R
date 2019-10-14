@@ -23,12 +23,16 @@ plot(iris[,1], iris[,2], xlim=c(0, 10), ylim=c(0, 10))
 text(2,8, "This is a test")
 arrows(x0=3, y0=7, x1=5, y1=5, length = 0.15, col="red")
 text(4, 9, expression(hat(beta) == (X^t * X)^{-1} * X^t * y))
-<<<<<<< HEAD
 
 #61/208 axis
 plot(1:7, rnorm(7), xaxt = "n", frame = FALSE)
 axis(1, 1:7, LETTERS[1:7], col = "green")
 axis(3, 1:7, paste("test", LETTERS[1:7]), col.axis = "blue", las=2)
 axis(4, lty=2, lwd = 2, las=2)
-=======
->>>>>>> 54981e70c44194afdec8a874a31f499fc4587c28
+
+plot(1:8, xaxt = "n", xlab = "")
+axis(1, labels = FALSE)
+my.labels <- paste("Label", 1:8, sep = "-")
+text(1:8, par("usr")[3] - 0.25, srt = 45, adj = 1,
+     labels = my.labels, xpd = TRUE) #xpd: all plotting is clipped to the figure region #srt: string rotation 
+mtext(1, text = "X Axis Label", line = 3)
