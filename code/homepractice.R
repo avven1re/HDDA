@@ -1,5 +1,6 @@
 #A05 ppt -> browseURL("http://www.hmwu.idv.tw/web/R/A05-hmwu_R-Graphics&Visualization.pdf")
 
+#繪圖基礎
 par(mfrow = c(2, 3))
 n <- 24
 pie(rep(1,n), col=rainbow(n), main = "rainbow")
@@ -36,3 +37,13 @@ my.labels <- paste("Label", 1:8, sep = "-")
 text(1:8, par("usr")[3] - 0.25, srt = 45, adj = 1,
      labels = my.labels, xpd = TRUE) #xpd: all plotting is clipped to the figure region #srt: string rotation 
 mtext(1, text = "X Axis Label", line = 3)
+
+##A05 70/208 開始介紹基本統計圖
+
+#75/208 Histogram
+lab <- names(iris)[1]
+title <- paste("Histogram of ", lab)        #breaks
+hist(iris[,1], main=title, xlab=lab)        #pro = F 代表次數(預設) ; pro = T 為機率值
+range(iris[,1])
+hist(iris[,1], breaks=seq(3.5, 8.5, length=50),main=title, xlab=lab)
+hist(iris[,1], breaks=seq(3.5, 8.5, length=50),main=title, xlab=lab, pro=T)
