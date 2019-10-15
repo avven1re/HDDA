@@ -166,3 +166,106 @@ points(x[1:50], y[1:50], col="red")
 points(x[51:100], y[51:100], col="blue")
 points(x[101:150], y[101:150], col="green")
 abline(lm(y~x))
+
+#102/208 EX: Buble Plot using symbols
+data("airquality")
+head(airquality, 3)
+aq <- airquality[airquality$Month %in% c(7,8,9),]       # %in% 邏輯判斷式 見browseURL("https://joe11051105.gitbooks.io/r_basic/content/control_flow/logic_decision.html")
+aq$Month <- factor(aq$Month, labels = c("July", "August", "September"))
+attach(aq)
+radius <- sqrt(Wind/pi) 
+symbols(Day, Ozone, circles=radius,
+        inches=0.1, fg="black", bg=as.integer(Month)+1, 
+        xlab="Day of month", ylab="Ozone (ppb)",
+        main="Air quality in New York by Day",
+        ylim=c(0, 210))
+
+legend(-2, 200, legend=c("July", "August", "September"), 
+       pch=21, pt.bg=2:4, col="black", pt.cex=2, horiz=T)
+x.loc <- rep(30, 3)
+y.loc <- seq(140, 180, length.out=3)
+s <- summary(radius)[c(1, 4, 6)]
+symbols(x.loc, y.loc, circles=s, inches=0.1, add = T)
+text(x.loc+1, y.loc, labels=round(s,2), pos=4)
+text(31, 200, labels="Wind (mph)")
+detach(aq)
+
+# 103/208 EX:scatterplot with colors (1)
+get_order_color <- function(x){
+  n <- length(x)
+  mycol <- terrain.colors(n)
+  sorted.x <- sort(x); order.x <- order(x)
+  id <- 1:n
+  sorted.id <- id[order.x]
+  x.col <- mycol[order(sorted.id)]
+  x.col
+}
+
+aq.complete <- airquality[complete.cases(airquality), ] #complete.cases 找不是遺失直之處(row)
+n <- dim(aq.complete) 
+attach(aq.complete)
+layout(matrix(c(1, 2), ncol=2), width=c(4, 1))
+Ozone.col <- get_order_color(Ozone)
+plot(Wind ~ Temp, xlab="Temperature (F)", ylab="Wind (mph)", pch=16, col= Ozone.col, cex=2)
+at <- which(Ozone==24)
+text(Temp[at], Wind[at], "24")
+par("mai")
+par.orig <- par(mai=c(1.02, 0, 0.82, 0.1))
+mycolor <- terrain.colors(n)
+plot(0, 0, xlab="", ylab="", xaxt="n", yaxt="n", bty="n", type="n")
+rasterImage(rev(mycolor), -1, -1, 0, 1, interpolate=FALSE)
+id <- rev(floor(seq(1, np[1], length.out=10)))
+id.scale <- (id-min(id))/(max(id)-min(id))*2-1 
+text(rep(0.1, 10), id.scale, label= sort(Ozone)[id])
+mtext("Ozone (ppb)", side = 1)
+par(par.orig)
+detach(aq.complete)
+
+# 104/208 EX:scatterplot with colors (2)
+attach(aq.complete)
+layout(matrix(c(1, 2), ncol=2), width=c(4, 1))
+Ozone.col <- variable_to_color(Ozone)
+plot(Wind ~ Temp, xlab="Temperature (F)", ylab="Wind (mph)", pch=16, col= Ozone.col, cex=2)
+at <- which(Ozone==24)
+text(Temp[at], Wind[at], "24")
+
+par.orig <- par(mai=c(1.02, 0, 0.82, 0.1))
+mycolor <- terrain.colors(n)
+plot(0, 0, xlab="", ylab="", xaxt="n", yaxt="n", bty="n", type="n")
+rasterImage(rev(mycolor), -1, -1, 0, 1, interpolate=FALSE)
+id <- rev(floor(seq(1, np[1], length.out=10)))
+lab <- rev(floor(seq(min(Ozone), max(Ozone), length.out=10)))
+id.scale <- (id-min(id))/(max(id)-min(id))*2-1 # scale to (-1, 1)
+text(rep(0.2, 10),  id.scale, label= lab)
+mtext("Ozone (ppb)", side = 1)
+par(par.orig)
+detach(aq.complete)
+
+variable_to_color <- function(x){
+  n <- length(x)
+  mycol <- terrain.colors(n)
+  # scale x to (1, n)
+  scale.x <- floor((x-min(x))/(max(x)-min(x))*(n-1))+1
+  x.col <- mycol[scale.x]
+  x.col
+}
+
+# 107/208
+coplot(Sepal.Length ~ Petal.Width | Species, data = iris)
+coplot(Wind ~ Temp | Ozone, data = airquality)
+
+# 108/208
+head(ChickWeight, 3)
+coplot(weight ~ Time | Chick * Diet, type = "l", data = ChickWeight)
+
+
+# 109/208 Smoothscatter
+n <- 1e+04
+x1 <- rnorm(n, mean = -1, sd = 1)
+y1 <- rnorm(n, mean = -1, sd = 1)
+x2 <- rnorm(n, mean = 2, sd = 1) 
+y2 <- rnorm(n, mean = 2, sd = 1)
+par(mfrow=c(1, 2))
+plot(x1, y1, main="black")
+smoothScatter(x1, y1, col="black", colramp=colorRampPalette(c("white", "black")), 
+              main='colorRampPalette(c("white", "black"))')
