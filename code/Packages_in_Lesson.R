@@ -31,5 +31,11 @@ install.packages("gridExtra")     #for gird ggplot(one page include more than on
 library(gridExtra)
 
 #GoogleMap
+install.packages("RgoogleMaps")
+library(RgoogleMaps)
+
 install.packages("ggmap")
 library(ggmap)
+
+install.packages("mapproj")
+library(mapproj)

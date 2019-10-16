@@ -65,3 +65,20 @@ ggmap_show_api_key()
 
 library(RgoogleMaps)
 twmap <- get_map(location = 'Taiwan', zoom = 7, language = "zh-TW")
+twmap
+
+TaiwanMap <- GetMap(center=c(lat = 23.58, lon =120.58), zoom =7, destfile = "Taiwan1.png")
+TaiwanMap <- GetMap(center=c(lat = 23.58, lon =120.58), zoom = 10, destfile = "Taiwan2.png",
+                    maptype = "terrain")
+
+#28/47
+library(ggmap)
+library(mapproj)
+tw.map <- get_map(location = 'Taiwan', zoom = 7)
+ggmap(tw.map)
+tw.map.zh <- get_map(location = 'Taiwan', zoom = 7, language = "zh-TW")
+ggmap(tw.map.zh)
+
+tw.map.ntpu <- get_map(location = c(lon = 121.374925, lat = 24.943403),
+                       zoom = 10, language = "zh-TW" , maptype = "terrain")
+ggmap(tw.map.ntpu)
