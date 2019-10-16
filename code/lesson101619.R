@@ -55,7 +55,7 @@ p + geom_line(aes(y=Sepal.Width))
 #17/47 Google Map
 install.packages("ggmap")
 library(ggmap)
-register_google(key = "AIzaSyD7ExFH62Ni2cYE5Vp4939DVO6DeUKxupk", write = TRUE) 
+register_google(key = " API ", write = TRUE)  #put google API KEYS
 houston_center <- geocode("Houston, TX")
 houston_center
 
