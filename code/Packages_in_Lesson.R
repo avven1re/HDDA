@@ -24,5 +24,8 @@ install.packages("plot3D")
 library("plot3D")
 
 #ggplot
+install.packages("ggplot2")
+library(ggplot2)
+
 install.packages("gridExtra")     #for gird ggplot(one page include more than one ggplot)
 library(gridExtra)
