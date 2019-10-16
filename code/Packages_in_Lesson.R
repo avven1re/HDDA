@@ -29,3 +29,7 @@ library(ggplot2)
 
 install.packages("gridExtra")     #for gird ggplot(one page include more than one ggplot)
 library(gridExtra)
+
+#GoogleMap
+install.packages("ggmap")
+library(ggmap)

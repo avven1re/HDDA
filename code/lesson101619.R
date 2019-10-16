@@ -51,3 +51,14 @@ p <- ggplot(data=iris, aes(x=Sepal.Length, y=Sepal.Width, shape=Species, color=S
 p <- p + geom_point()
 p
 p + geom_line(aes(y=Sepal.Width))
+
+#17/47 Google Map
+install.packages("ggmap")
+library(ggmap)
+register_google(key = "AIzaSyCuYcvrytmKLGN", write = TRUE) 
+houston_center <- geocode("Houston, TX")
+houston_center
+
+has_google_key()
+google_key()
+ggmap_show_api_key()
