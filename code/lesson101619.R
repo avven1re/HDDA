@@ -55,10 +55,13 @@ p + geom_line(aes(y=Sepal.Width))
 #17/47 Google Map
 install.packages("ggmap")
 library(ggmap)
-register_google(key = "AIzaSyCuYcvrytmKLGN", write = TRUE) 
+register_google(key = "AIzaSyD7ExFH62Ni2cYE5Vp4939DVO6DeUKxupk", write = TRUE) 
 houston_center <- geocode("Houston, TX")
 houston_center
 
 has_google_key()
 google_key()
 ggmap_show_api_key()
+
+library(RgoogleMaps)
+twmap <- get_map(location = 'Taiwan', zoom = 7, language = "zh-TW")
