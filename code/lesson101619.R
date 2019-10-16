@@ -33,3 +33,21 @@ iris.mean     #aggregate 以Species 為根據做平均
 mydata <- cbind(stack(iris.mean[,-1]), Species = iris.mean$Species)
 mydata
 ggplot(mydata, aes(x=ind, y=values, fill = Species)) + geom_bar(position="dodge", stat="identity")
+
+#14/47
+p <- ggplot(data=mtcars, aes(x=wt, y=mpg, label = rownames(mtcars)))
+p + geom_point()
+p + geom_text(size=3)
+p + geom_label()
+
+#15/47 geom_boxplot
+mtcars$cyl <- factor(mtcars$cyl)
+ggplot(data=mtcars, aes(x=cyl, y=disp)) + geom_boxplot()
+
+#16/47
+ggplot(data=iris, aes(x=Sepal.Length, y=Sepal.Width,
+                      shape=Species, color=Species)) + geom_point()
+p <- ggplot(data=iris, aes(x=Sepal.Length, y=Sepal.Width, shape=Species, color=Species))
+p <- p + geom_point()
+p
+p + geom_line(aes(y=Sepal.Width))
