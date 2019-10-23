@@ -80,5 +80,5 @@ tw.map.zh <- get_map(location = 'Taiwan', zoom = 7, language = "zh-TW")
 ggmap(tw.map.zh)
 
 tw.map.ntpu <- get_map(location = c(lon = 121.374925, lat = 24.943403),
-                       zoom = 10, language = "zh-TW" , maptype = "terrain")
+                       zoom = 15, language = "zh-TW" , maptype = "terrain")
 ggmap(tw.map.ntpu)
