@@ -1,4 +1,5 @@
-##101619
+##101619 and 102319
+#encoding : CP950
 #E04
 
 #8/47 ggplot & 頁面分割
@@ -83,8 +84,8 @@ tw.map <- get_map(location = 'Taiwan', zoom = 7, language = "zh-TW")
 
 # 21/68
 library(RgoogleMaps)
-TaiwanMap <- GetMap(center=c(lat = 23.58, lon =120.58), zoom =7, destfile = "Taiwan1.png")
-TaiwanMap <- GetMap(center=c(lat = 23.58, lon =120.58), zoom = 10, destfile = "Taiwan2.png", maptype = "terrain")
+TaiwanMap <- GetMap(center=c(lat = 23.58, lon =120.58), zoom =7, destfile = "pic/Taiwan1.png")
+TaiwanMap <- GetMap(center=c(lat = 23.58, lon =120.58), zoom = 10, destfile = "pic/Taiwan2.png", maptype = "terrain")
 
 # 22/68
 my.lat <- c(25.175339, 25.082288, 25.042185, 25.046254)
@@ -96,9 +97,32 @@ My.markers <- cbind.data.frame(lat = my.lat, lon = my.lon)
 tmp <-  PlotOnStaticMap(MyMap, lat = My.markers[,"lat"], lon = My.markers[,"lon"], destfile = "my.png", cex=2.5, pch=20, col=1:4, add=F)
 
 # 23/68 於地圖上標記
-png("my2.png", 640, 640)
+png("pic/my2.png", 640, 640)
 tmp <-  PlotOnStaticMap(MyMap, lat = My.markers[,"lat"], lon = My.markers[,"lon"], cex=2.5, pch=20, col=1:4, add=F)
 tmp <-  PlotOnStaticMap(MyMap, lat = My.markers[,"lat"], lon = My.markers[,"lon"], col="blue", add=T, FUN = lines, lwd = 2)
+
+# 24/68 於地圖上加文字與圖片
+my.lat <- c(25.175339, 25.14362, 24.942605)
+my.lon <- c(121.450003, 121.501768, 121.368381)
+bb = qbbox(my.lat, my.lon)
+print(bb)
+MyMap <- GetMap.bbox(bb$lonR, bb$latR, destfile = "pic/my3.png", maptype = "roadmap")
+
+My.markers <- cbind.data.frame(lat = my.lat, lon = my.lon)
+tmp <- PlotOnStaticMap(MyMap, lat = My.markers[,"lat"], lon = My.markers[,"lon"], 
+                       destfile = "my.png", cex=2.5, pch=18:10, col=1:3, add=F)
+TextOnStaticMap(MyMap, lat = My.markers[,"lat"]+0.01,
+                 lon = My.markers[,"lon"],
+                 labels=c("我家", "復興高中", "國立臺北大學三峽校區"), add=T)
+
+library(EBImage)
+ntpu <- readImage("data/NTPUcolorlogo.jpg")
+loc <- LatLon2XY.centered(MyMap, lat=My.markers[3, 1], lon=My.markers[3, 2])
+rasterImage(ntpu, loc[[1]], loc[[2]]+30, loc[[1]]+50, loc[[2]]+80)
+Fuxing <- readImage("data/Fuxinglogo.jpg")
+loc <- LatLon2XY.centered(MyMap, lat=My.markers[2, 1], lon=My.markers[2, 2])
+rasterImage(Fuxing, loc[[1]], loc[[2]]+30, loc[[1]]+50, loc[[2]]+80)
+
 
 #28/47
 library(ggmap)

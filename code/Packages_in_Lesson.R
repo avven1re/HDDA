@@ -31,6 +31,8 @@ install.packages("gridExtra")     #for gird ggplot(one page include more than on
 library(gridExtra)
 
 #GoogleMap
+browseURL("http://www.hmwu.idv.tw/downloads/E04-hmwu_R-Map.pdf")
+
 install.packages("RgoogleMaps")
 library(RgoogleMaps)
 
@@ -39,3 +41,7 @@ library(ggmap)
 
 install.packages("mapproj")
 library(mapproj)
+
+install.packages("BiocManager") 
+BiocManager::install("EBImage")
+library(EBImage)
