@@ -123,6 +123,22 @@ Fuxing <- readImage("data/Fuxinglogo.jpg")
 loc <- LatLon2XY.centered(MyMap, lat=My.markers[2, 1], lon=My.markers[2, 2])
 rasterImage(Fuxing, loc[[1]], loc[[2]]+30, loc[[1]]+50, loc[[2]]+80)
 
+# 26/68 Spatial Visualization with ggplot2
+library(maps); library(maptools); library(mapdata); library(mapproj)
+layout(matrix(c(1,1,1,0,2,0), ncol=2), widths=c(10, 1), heights=c(1, 10, 1))
+map("world2Hires", xlim=c(118, 123), ylim=c(21, 26))
+data <- read.table("20140714-weather.txt", sep="\t", header=TRUE, row.names=1)
+x <- data$TEMP
+tm <- floor((100-1)/(max(x)-min(x))*(x-min(x)) + 1)
+used.col <- heat.colors(100)[tm]
+points(data$lon, data$lat, pch=15, col=used.col)
+text(data$lon, data$lat, labels=row.names(data))
+title("20140714, 天氣")
+par(mar=c(1,1,1,1))
+image(t(matrix(c(1:100), ncol=1)), 
+      col=heat.colors(100), xaxt="n", yaxt="n")
+axis(LEFT <- 2, at=tm/100, 
+     labels=as.character(x), cex.axis=1)
 
 #28/47
 library(ggmap)
@@ -135,3 +151,34 @@ ggmap(tw.map.zh)
 tw.map.ntpu <- get_map(location = c(lon = 121.374925, lat = 24.943403),
                        zoom = 15, language = "zh-TW" , maptype = "terrain")
 ggmap(tw.map.ntpu)
+
+# 29/68
+tw.map.ntpu <- get_map(location = c(lon = 121.374925, lat = 24.943403),
+                       zoom = 10, language = "zh-TW", maptype = "terrain")
+ggmap(tw.map.ntpu)
+
+map <- get_map(location = c(lon = 121.374925, lat = 24.943403),
+               zoom = 10, language = "zh-TW", maptype = "toner-lite")
+ggmap(map)
+
+# 30/68
+uv <- read.csv("dataset/UV_20191016130309.csv")
+head(uv)
+
+# 經緯度(度分秒) => 度數
+lon.deg <- sapply((strsplit(as.character(uv$WGS84Lon), ",")), as.numeric)
+lon.deg
+uv$lon <- lon.deg[1, ] + lon.deg[2, ]/60 + lon.deg[3, ]/3600
+lat.deg <- sapply((strsplit(as.character(uv$WGS84Lat), ",")), as.numeric)
+uv$lat <- lat.deg[1, ] + lat.deg[2, ]/60 + lat.deg[3, ]/3600
+
+tw.map <- get_map(location = 'Taiwan', zoom = 7)
+ggmap(tw.map) + 
+  geom_point(data = uv, aes(x = lon, y = lat, size = UVI), color="purple")
+
+# 31/68
+ggmap(tw.map) + 
+  geom_point(data = uv, aes(x = lon, y = lat, size = UVI, color = UVI)) +
+  scale_color_continuous(low = "yellow", high = "red") +
+  facet_grid(~PublishAgency) +
+  guides(size = FALSE)
