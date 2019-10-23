@@ -48,6 +48,7 @@ library(EBImage)
 
 install.packages("plyr")
 library(plyr) 
+
 install.packages("maps")
 library(maps)
 
@@ -56,3 +57,6 @@ library(maptools)
 
 install.packages("mapdata")
 library(mapdata)
+
+install.packages("sf")
+library(sf)

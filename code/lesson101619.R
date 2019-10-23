@@ -302,3 +302,21 @@ ggplot(TW.Pop2019, aes(x = reorder(city, population), y = population/10000,
   geom_bar(stat="identity", width=0.6) +
   coord_flip() +
   labs(title = "台灣縣市人口分布圖", x = "縣市", y = "人口數(萬)") 
+
+# 45/68
+library(sf) 
+taiwan.map <- st_read("dataset/gadm36_TWN_shp/gadm36_TWN_2.shp")
+head(taiwan.map)
+dim(taiwan.map)
+print(taiwan.map, n = 22)
+
+
+# 46/68
+plot(taiwan.map[1])
+plot(taiwan.map[2:13], max.plot = 12)
+
+
+# 47/68
+plot(st_geometry(taiwan.map))
+plot(taiwan.map["NL_NAME_2"], axes = TRUE)
+st_geometry(taiwan.map)
