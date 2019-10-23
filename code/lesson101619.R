@@ -116,7 +116,7 @@ TextOnStaticMap(MyMap, lat = My.markers[,"lat"]+0.01,
                  labels=c("我家", "復興高中", "國立臺北大學三峽校區"), add=T)
 
 library(EBImage)
-ntpu <- readImage("data/NTPUcolorlogo.jpg")
+ntpu <- readImage("dataset/NTPUcolorlogo.jpg")
 loc <- LatLon2XY.centered(MyMap, lat=My.markers[3, 1], lon=My.markers[3, 2])
 rasterImage(ntpu, loc[[1]], loc[[2]]+30, loc[[1]]+50, loc[[2]]+80)
 Fuxing <- readImage("data/Fuxinglogo.jpg")
