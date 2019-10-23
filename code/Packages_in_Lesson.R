@@ -46,6 +46,8 @@ install.packages("BiocManager")
 BiocManager::install("EBImage")
 library(EBImage)
 
+install.packages("plyr")
+library(plyr) 
 install.packages("maps")
 library(maps)
 

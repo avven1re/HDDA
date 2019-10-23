@@ -182,3 +182,123 @@ ggmap(tw.map) +
   scale_color_continuous(low = "yellow", high = "red") +
   facet_grid(~PublishAgency) +
   guides(size = FALSE)
+
+# 32/68
+tpe.map.zh11 <- get_map(location = 'Taipei', zoom = 11, maptype = "roadmap", language = "zh-TW")
+ggmap(tpe.map.zh11)
+tpe.map.zh12 <- get_map(location = 'Taipei', zoom = 12, maptype = "roadmap", language = "zh-TW")
+ggmap(tpe.map.zh12)
+tpe.map.zh15 <- get_map(location = 'Taipei', zoom = 15, maptype = "roadmap", language = "zh-TW")
+ggmap(tpe.map.zh15)
+tpe.map.zh21 <- get_map(location = 'Taipei', zoom = 21, maptype = "roadmap", language = "zh-TW")
+ggmap(tpe.map.zh21)
+
+# 33/68
+head(crime)
+dim(crime)
+summary(crime$offense)
+library(dplyr)
+rapes <- filter(crime, offense == "rape") %>%
+  select(date, offense, address, lon, lat)
+head(rapes)
+dim(rapes)
+
+# 34/68
+houston_center <- geocode("Houston, TX")
+
+# register_google(key = "AIzaSyCuYcvrytmKLGNxxx", write = TRUE) 
+houston_center <- geocode("Houston, TX")
+houston_center
+
+#has_google_key()
+#google_key()
+#ggmap_show_api_key()
+
+houston_map <- get_map(houston_center, zoom = 13, maptype = "roadmap")
+ggmap(houston_map)
+
+# 35/68
+ggmap(houston_map,
+      base_layer = ggplot(data = rapes, aes(x=lon, y = lat))) +
+  geom_point(color = "red", size = 3, alpha = 0.5)
+
+ggmap(houston_map) +
+  geom_point(data = rapes, aes(x=lon, y = lat), 
+             color = "red", size = 3, alpha = 0.5)
+
+ggmap(houston_map) +
+  geom_point(data = rapes, aes(x=lon, y = lat), 
+             color = "red", size = 3, alpha = 0.5) +
+  geom_density2d(size = 0.3)
+
+
+# 36/68
+ggmap(houston_map,
+      base_layer = ggplot(data = rapes, aes(x=lon, y = lat))) +
+  geom_point(color = "red", size = 3, alpha = 0.5) +
+  theme_void() +
+  labs(title = "Location of reported rapes",
+       subtitle = "Houston Jan - Aug 2010",
+       caption = "source: http://www.houstontx.gov/police/cs/")
+
+ggmap(houston_map) +
+  geom_point(data = rapes, aes(x=lon, y = lat), 
+             color = "red", size = 3, alpha = 0.5) +
+  geom_density2d(data = rapes, aes(x = lon, y=lat), size = 0.3)
+
+
+
+# 37/68
+states.map <- map_data("state")
+head(states.map, 3)
+tail(states.map, 3)
+ggplot(states.map, aes(x=long, y=lat, group=group)) + 
+  geom_polygon(fill="white", colour="black")
+ggplot(states.map, aes(x=long, y=lat, group=group)) +
+  geom_path() + coord_map("mercator")
+
+
+# 38/68
+world.map <- map_data("world")
+sort(unique(world.map$region))
+east.asia <- map_data("world", region=c("Japan", "China", "North Korea", "South Korea"))
+ggplot(east.asia, aes(x=long, y=lat, group=group, fill=region)) +
+  geom_polygon(colour="black") +
+  scale_fill_brewer(palette="Set2")
+
+
+# 39/68
+country <- c("France", "Austria", "Italy", "Switzerland", "Germany", "Spain", "Czech Republic")
+mymapdata <- map_data("world", region = country)
+ggplot(mymapdata, aes(x = long, y = lat, group = group, fill = region)) + 
+  geom_polygon(colour = "black") + 
+  scale_fill_brewer(palette = "Set2")
+
+
+
+# 40/68
+head(USArrests, 3)
+crimes <- data.frame(state = tolower(rownames(USArrests)), USArrests)
+head(crimes, 3)
+states.map <- map_data("state")
+head(states.map, 3)
+crime.map <- merge(states.map, crimes, by.x="region", by.y="state")
+head(crime.map, 3)
+
+# 41/68
+library(plyr) 
+crime.map <- arrange(crime.map, group, order)
+head(crime.map, 3)
+ggplot(crime.map, aes(x=long, y=lat, group=group, fill=Assault)) +
+  geom_polygon(colour="black") +
+  coord_map("polyconic")
+
+# 44/68
+TW.Pop2019 <- read.csv("dataset/TW_Population2019.csv")
+head(TW.Pop2019)
+colnames(TW.Pop2019) <- c("rank", "city", "category", "population")
+ggplot(TW.Pop2019, aes(x = reorder(city, population), y = population/10000,
+                       fill = category)) +
+  geom_bar(stat="identity", width=0.6) +
+  coord_flip() +
+  labs(title = "台灣縣市人口分布圖", x = "縣市", y = "人口數(萬)") 
