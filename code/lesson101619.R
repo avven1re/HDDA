@@ -59,7 +59,7 @@ register_google(key = " API ", write = TRUE)  #put google API KEYS
 houston_center <- geocode("Houston, TX")
 houston_center
 
-has_google_key()
+has_google_key()  #往後"先"用此指令判斷是否已經匯入API金鑰
 google_key()
 ggmap_show_api_key()
 
@@ -70,6 +70,35 @@ twmap
 TaiwanMap <- GetMap(center=c(lat = 23.58, lon =120.58), zoom =7, destfile = "Taiwan1.png")
 TaiwanMap <- GetMap(center=c(lat = 23.58, lon =120.58), zoom = 10, destfile = "Taiwan2.png",
                     maptype = "terrain")
+
+# 19/68
+#library(ggmap)
+#register_google(key = "API", write = TRUE) 
+tw.xy <- geocode("Taiwan")
+tw.xy
+has_google_key()
+google_key()
+
+tw.map <- get_map(location = 'Taiwan', zoom = 7, language = "zh-TW")
+
+# 21/68
+library(RgoogleMaps)
+TaiwanMap <- GetMap(center=c(lat = 23.58, lon =120.58), zoom =7, destfile = "Taiwan1.png")
+TaiwanMap <- GetMap(center=c(lat = 23.58, lon =120.58), zoom = 10, destfile = "Taiwan2.png", maptype = "terrain")
+
+# 22/68
+my.lat <- c(25.175339, 25.082288, 25.042185, 25.046254)
+my.lon <- c(121.450003, 121.565481, 121.614548, 121.517532)
+bb = qbbox(my.lat, my.lon)
+print(bb)
+MyMap <- GetMap.bbox(bb$lonR, bb$latR, destfile = "pic/my.png", maptype = "roadmap")
+My.markers <- cbind.data.frame(lat = my.lat, lon = my.lon)
+tmp <-  PlotOnStaticMap(MyMap, lat = My.markers[,"lat"], lon = My.markers[,"lon"], destfile = "my.png", cex=2.5, pch=20, col=1:4, add=F)
+
+# 23/68 於地圖上標記
+png("my2.png", 640, 640)
+tmp <-  PlotOnStaticMap(MyMap, lat = My.markers[,"lat"], lon = My.markers[,"lon"], cex=2.5, pch=20, col=1:4, add=F)
+tmp <-  PlotOnStaticMap(MyMap, lat = My.markers[,"lat"], lon = My.markers[,"lon"], col="blue", add=T, FUN = lines, lwd = 2)
 
 #28/47
 library(ggmap)
