@@ -60,3 +60,10 @@ library(mapdata)
 
 install.packages("sf")
 library(sf)
+
+#Missing value
+install.packages("mice")
+library(mice)
+
+install.packages("VIM")
+library(VIM)
