@@ -210,6 +210,7 @@ plot(raw.data, trun.data, main="truncation", type="l", lwd=2, col="blue")
 
 
 # 32/70
+install.packages("R.matlab")
 library('R.matlab')
 data <- readMat("software.mat")
 print(data)
