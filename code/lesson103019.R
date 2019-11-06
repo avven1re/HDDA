@@ -1,4 +1,4 @@
-#103019 browseurl("http://www.hmwu.idv.tw/web/R_AI_M/AI-M3-hmwu_R_DataManagement_v2.pdf)
+#103019 browseURL("http://www.hmwu.idv.tw/web/R_AI_M/AI-M3-hmwu_R_DataManagement_v2.pdf")
 library(mice)
 library(VIM)
 
