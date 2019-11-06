@@ -1,4 +1,6 @@
 #packages for preparing
+install.packages("magrittr")
+library(magrittr)
 
 #A05 ppt
 browseURL("http://www.hmwu.idv.tw/web/R/A05-hmwu_R-Graphics&Visualization.pdf")
