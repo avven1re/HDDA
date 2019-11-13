@@ -21,7 +21,7 @@ sum((iris.sub - iris.sub.approx)^2)
 
 # require packages: locfit, tiff, fftwtools
 library(EBImage) #(Repositories: BioC Software)
-lena <- readImage("dataset/lena.jpg")
+lena <- readImage("pic/lena.jpg")
 dims <- dim(lena)
 dims
 
