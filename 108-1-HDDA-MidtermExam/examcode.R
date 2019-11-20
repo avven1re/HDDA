@@ -74,10 +74,29 @@ plot(airf$Sspl, sqr(airf$Sspl))
 plot(airf$Ssdt, sqr(airf$Ssdt))
 
 #Box-Cox
-install.packages("boxcox")
-airfbc <- boxcox(airf)
+library(MASS)
+airf.lm <- lm(formula = Sspl ~ Frequency + Angle_of_Attack + Chord_length + Free_stream_velocity + Ssdt, data = airf)
 
+airfbc <- boxcox(Sspl ~ Frequency + Angle_of_Attack + Chord_length + Free_stream_velocity + Ssdt, data = airf, lambda = seq(-2, 2, 1/10))
 
+#3
+library(RgoogleMaps)
+
+library(ggmap)
+
+library(mapproj)
+
+install.packages("BiocManager") 
+BiocManager::install("EBImage")
+library(EBImage)
+
+library(plyr) 
+library(maps)
+library(maptools)
+library(mapdata)
+library(sf)
+
+nt <- read.table("108-1-HDDA-MidtermExam/po0201a1ac2.csv", sep = ",", skip = 2)
 
 
 
