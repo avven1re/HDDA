@@ -1,4 +1,4 @@
-#111319
+#111319 browseURL("http://www.hmwu.idv.tw/web/R/C01-hmwu_R-DimensionReduction.pdf")
 
 # 12/95
 
