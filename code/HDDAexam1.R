@@ -224,7 +224,7 @@ geoPoint <- function(address, key, verbose=FALSE) {
 llpos <- matrix(NaN, length(rps02), 2)
 k <- 1
 for (i in 1 : length(rps02)) {
-  templl <- geoPoint(rps02[i], "AIzaSyD7ExFH62Ni2cYE5Vp4939DVO6DeUKxupk") #放入GoogleAPI金鑰
+  templl <- geoPoint(rps02[i], "AIzaSy6DeUKxupk") #放入GoogleAPI金鑰
   
   if(sum(templl[1] == "Status: ZERO_RESULTS") == 1){
     llpos[i, 1] <- NA
