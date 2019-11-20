@@ -175,7 +175,7 @@ mdata.mip <- apply(mdata, 2, mean.subst)
 mdata.mip
 
 
-# 26/70
+# 26/70 KNN
 names(airquality)
 airquality.imp.median <- kNN(airquality[1:4], k=5)
 head(airquality.imp.median)
