@@ -175,7 +175,7 @@ mdata.mip <- apply(mdata, 2, mean.subst)
 mdata.mip
 
 
-# 26/70
+# 26/70 KNN
 names(airquality)
 airquality.imp.median <- kNN(airquality[1:4], k=5)
 head(airquality.imp.median)
@@ -192,7 +192,7 @@ trim_mean <- function(x){
 airquality.imp.tmean <- kNN(airquality[1:4], k=5, numFun=trim_mean)
 
 
-# 31/70
+# 31/70 Log-Transformation
 par(mfrow=c(1,4))
 raw.data <- 0:100
 pa.data <- ifelse(raw.data >= 84, 1, 0)
@@ -232,7 +232,7 @@ logx <- function(x){
   log(x + 1 - min(x)) 
 }
 
-x <- runif(80, min = -5, max = 5) # x <- rnorm(80) 
+x <- runif(80, min = -5, max = 5) # x <- rnorm(80) 
 x <- c(x, rnorm(20, mean=20, sd=10))
 par(mfrow=c(1, 3))
 hist(x, main="x~runif")
@@ -240,7 +240,7 @@ plot(x, logx(x), main="x vs logx")
 hist(logx(x), main="logx")
 
 
-# 35/70
+# 35/70 Box-cox
 x <- seq(0.5, 2, length.out=100)
 bc <- function(y, lambda){
   (y^lambda -1)/lambda
