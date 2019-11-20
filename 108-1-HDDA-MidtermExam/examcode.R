@@ -26,9 +26,17 @@ mean.subst <- function(x) {
 mamm.m <- apply(mamm, 2, mean.subst)
 matrixplot(mamm.m)
 
+#kNN
+mamm.kNN <- kNN(mamm, k = 5)
+matrixplot(mamm.kNN[1 : 6])
 
+#kNN with 自訂平均函數
+t_mean <- function(x){
+  mean(x, trim = 0.1)
+}
 
-
+mamm.kNNt <- kNN(mamm, k = 5, numFun = t_mean)
+matrixplot(mamm.kNNt[1 : 6])
 
 
 
