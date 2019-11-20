@@ -38,16 +38,44 @@ t_mean <- function(x){
 mamm.kNNt <- kNN(mamm, k = 5, numFun = t_mean)
 matrixplot(mamm.kNNt[1 : 6])
 
+###
+#Log
+airf.log <- as.data.frame(apply(airf, 2, log))
+airflog.lm <- lm(formula = Sspl ~ Frequency + Angle_of_Attack + Chord_length + Free_stream_velocity + Ssdt, data = airf.log)
+plot(airflog.lm$residuals)
+
+#SQRT*10
+airf.sr <- as.data.frame(apply(airf, 2, function(x) sqrt(x)*10))
+airfsr.lm <- lm(formula = Sspl ~ Frequency + Angle_of_Attack + Chord_length + Free_stream_velocity + Ssdt, data = airf.sr)
+plot(airfsr.lm$fitted.values)
+###
+
+#2
+airf <- read.table("108-1-HDDA-MidtermExam/airfoil_self_noise.dat")
+names(airf) <- c("Frequency", "Angle_of_Attack", "Chord_length", "Free_stream_velocity", "Ssdt", "Sspl")
+
+summary(airf)
+
+attach(airf)
 
 
+airf.lm <- lm(formula = Sspl ~ Frequency + Angle_of_Attack + Chord_length + Free_stream_velocity + Ssdt, data = airf)
+plot(airf.lm$residuals)
 
+#log
+plot(airf$Sspl, log(airf$Sspl))
+plot(airf$Ssdt, log(airf$Ssdt))
+#SQRT*10
+sqr <- function(x){
+  sqrt(x) * 10
+}
 
+plot(airf$Sspl, sqr(airf$Sspl))
+plot(airf$Ssdt, sqr(airf$Ssdt))
 
-
-
-
-
-
+#Box-Cox
+install.packages("boxcox")
+airfbc <- boxcox(airf)
 
 
 
