@@ -23,6 +23,3 @@ geoPoint = function(address, key, verbose=FALSE) {
   }
 }
 
-t <- geoPoint(rps02[22], "AIzaSyD7ExFH62Ni2cYE5Vp4939DVO6DeUKxupk" )
-t[, 1]
-sum(t[1] == "Status: ZERO_RESULTS")
