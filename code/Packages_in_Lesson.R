@@ -72,3 +72,7 @@ library(VIM)
 
 install.packages("R.matlab")
 library('R.matlab')
+
+#Dimesion Reduction
+install.packages("jpeg")
+library(jpeg)
