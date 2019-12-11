@@ -369,11 +369,104 @@ swissroll <- function(n, sigma=0.05){
         return(list(xdata=xdata, angle=angle, color=my.color))
 }
 
-source("rainbow130.r")
+source("dataset/rainbow130.r")
 sr <- swissroll(800)
+install.packages("digest")
 library(rgl); open3d()
 plot3d(sr$xdata[,1], sr$xdata[,2], sr$xdata[,3], col=sr$color, size=3,
        xlab="", ylab="", zlab="", axes = T)
 library(vegan)
 sr.isomap <- isomap(dist(sr$xdata), ndim=2, k=7) # try different k
 plot(sr.isomap, col=sr$color)
+
+Scurve <- function(n){
+        # upper half S curve
+        theta1 <- runif((n/2), min=-0.9*(pi), max=(pi)/2)
+        z1 <- runif((n/2), min=0, max=5)
+        x1 <- -cos(theta1)
+        y1 <- 2-sin(theta1)
+        side.upper <- matrix(0, ncol=4, nrow=(n/2))
+        for(i in 1:(n/2)){
+                side.upper[i,1] <- x1[i]
+                side.upper[i,2] <- y1[i]
+                side.upper[i,3] <- z1[i]
+                side.upper[i,4] <- theta1[i]
+        }
+        order.theta1 <- order(theta1)
+        sort.theta1 <- sort(order.theta1, method="qu", index=TRUE)
+        upper.color <- sort.theta1$ix
+        # lower half S curve
+        theta2 <- runif((n/2), min=(pi)/2, max=1.9*(pi))
+        z2 <- runif((n/2), min=0, max=5)
+        x2 <- cos((pi)-theta2)
+        y2 <- sin((pi)-theta2)
+        side.lower <- matrix(0, ncol=4, nrow=(n/2))
+        for(i in 1:(n/2)){
+                side.lower[i,1] <- x2[i]
+                side.lower[i,2] <- y2[i]
+                side.lower[i,3] <- z2[i]
+                side.lower[i,4] <- theta2[i]
+        }
+        order.theta2 <- order(theta2)
+        sort.theta2 <- sort(order.theta2, method="qu", index=TRUE)
+        lower.color <- sort.theta2$ix
+        xdata <- rbind(side.upper[,c(1,3,2)], side.lower[,c(1,3,2)])
+        xdata <- scale(xdata) + matrix(rnorm(n*3,0, 0.05), n, 3)
+        angle <- c(side.upper[,4], side.lower[,4])
+        S.color <- c(upper.color, (n/2 + lower.color))
+        my.color <- (rainbow130((1.2)*n)[S.color])[1:n]
+        scatterplot3d(xdata, color=my.color,
+                      xlab="x", ylab="y", zlab="z",
+                      pch=20, angle=30)
+        open3d()
+        plot3d(xdata[,1], xdata[,2], xdata[,3], col=my.color, size=5,
+               xlab="x", ylab="y", zlab="z")
+        return(list(xdata=xdata, angle=angle, color=my.color))
+}
+
+#95/144 LDA
+data(iris3)
+Iris <- data.frame(rbind(iris3[,,1], iris3[,,2], iris3[,,3]),
+                   Species = rep(c("setosa","versicolor","virginica"), rep(50,3)))
+## LDA
+library(MASS)
+data <- Iris[,1:4]
+class <- Iris[,5]
+Iris.lda <- lda(x=data, grouping=class)
+Iris.lda <- lda(Species ~ ., Iris)
+lda.dim1 <- as.matrix(data)%*%iris.lda$scaling[,1]
+lda.dim2 <- as.matrix(data)%*%iris.lda$scaling[,2]
+## LDA for classification
+trainingIndex <- sample(1:150, 75)
+trainingSample <- Iris[trainingIndex, ]
+testSample <- Iris[-trainingIndex, ]
+table(Iris$Species[trainingIndex])
+ldaRule <- lda(Species ~ ., Iris,
+               subset = trainingIndex)
+predict(ldaRule, testSample)$class
+
+#101/144
+install.packages("dr")
+library(dr)
+iris.sir <- dr(as.integer(Species) ~ Sepal.Length + Sepal.Width + Petal.Length +
+                       Petal.Width , data=iris, nslices=3, chi2approx="wood", method="sir")
+summary(iris.sir)
+comp.sir <- as.matrix(iris[,1:4]) %*% as.matrix(iris.sir$evectors[,1:2])
+plot(comp.sir, col=as.integer(iris$Species)+1, main="SIR to Iris Data")
+Li6.1 <- function(n){
+        p <- 5
+        x <- matrix(0, ncol=p, nrow=n)
+        for(i in 1:p){
+                x[,i] <- rnorm(n, mean=0, sd=1)
+        }
+        epsilon <- rnorm(n, mean=0, sd=1)
+        y <- x[,1] + x[,2] + x[,3]+ x[,4] + epsilon
+        colnames(x) <- c("x1","x2","x3","x4","x5")
+        as.data.frame(cbind(y, x))
+}
+mydata <- Li6.1(200)
+attach(mydata)
+library(dr)
+my.sir <- dr(y~x1+x2+x3+x4+x5, method="sir",
+             nslices=10)
+my.sir
