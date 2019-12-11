@@ -318,3 +318,62 @@ data <- iris[,1:4]
 class <- iris[,5]
 iris.fa <- factanal(data, factors=1)
 fa.dim1 <- as.matrix(data)%*%iris.fa$loadings[,1]
+
+#66-71/144 MDS : cmdscale()
+cell.matrix <- read.table("dataset/YeastCellCycle_alpha.txt", header=TRUE, row.names=1)
+n <- dim(cell.matrix)[1]
+p <- dim(cell.matrix)[2]-1
+cell.data <- cell.matrix[,2:p+1]
+gene.phase <- cell.matrix[,1]
+phase.name <- c("G1", "S", "S/G2", "G2/M", "M/G1")
+cell.sdata <- t(scale(t(cell.data)))
+cell.cor <- cor(t(cell.sdata))
+cell.dist <- sqrt(2*(1-cell.cor))
+cell.mds <- cmdscale(cell.dist)
+plot(cell.mds[,1], cell.mds[,2], type="n", xlab="MDS-1", ylab="MDS-2", main="MDS for
+Cell Cycle Data")
+number <- c(1, 4, 5, 2, 3)[as.integer(gene.phase)]
+phase.color <- c("green", "blue", "red", "gray", "yellow")
+text(cell.mds[,1], cell.mds[,2], number, col= phase.color[number])
+legend(-0.7, 1.0, phase.name, pch="01234", col=phase.color)
+
+#73/144 PCA, MDS with K-means
+no.group <- 5
+no.iter <- 20
+USArrests.kmeans <- kmeans(USArrests, no.group, no.iter)
+plot(USArrests, col = USArrests.kmeans$cluster, main = "K-means: USArrests data")
+# PCA
+USArrests.pca <- princomp(USArrests, cor=TRUE, scores=TRUE)
+pca.dim1 <- USArrests.pca$scores[,1]; pca.dim2 <- USArrests.pca$scores[,2]
+plot(pca.dim1, pca.dim2, main="PCA for USArrests Data with K-means", xlab="PCA-1",
+     ylab="PCA-2", col=USArrests.kmeans$cluster)
+# MDS
+USArrests.mds<- cmdscale(dist(USArrests))
+mds.dim1 <- USArrests.mds[,1]; mds.dim2 <- USArrests.mds[,2]
+plot(mds.dim1, mds.dim2, xlab="MDS-1", ylab="MDS-2", main="MDS for USArrests Data with Kmeans", col = USArrests.kmeans$cluster)
+
+#86/144
+swissroll <- function(n, sigma=0.05){
+        angle <- (3*pi/2)*(1+2*runif(n));
+        height <- runif(n);
+        xdata <- cbind(angle*cos(angle), height, angle*sin(angle))
+        # angle <- seq((1.5*pi): (4.5*pi), length.out=n);
+        # height <- sample(0:21, n, replace = TRUE);
+        # xdata <- cbind(angle*cos(angle), height, angle*sin(angle))
+        xdata <- scale(xdata) + matrix(rnorm(n*3, 0, sigma), n, 3)
+        order.angle <- order(angle)
+        sort.angle <- sort(order.angle, index.return=TRUE)
+        col.id <- rainbow130(n)
+        my.color <- col.id[sort.angle$ix]
+        colnames(xdata) <- paste("x", 1:3, sep="")
+        return(list(xdata=xdata, angle=angle, color=my.color))
+}
+
+source("rainbow130.r")
+sr <- swissroll(800)
+library(rgl); open3d()
+plot3d(sr$xdata[,1], sr$xdata[,2], sr$xdata[,3], col=sr$color, size=3,
+       xlab="", ylab="", zlab="", axes = T)
+library(vegan)
+sr.isomap <- isomap(dist(sr$xdata), ndim=2, k=7) # try different k
+plot(sr.isomap, col=sr$color)
